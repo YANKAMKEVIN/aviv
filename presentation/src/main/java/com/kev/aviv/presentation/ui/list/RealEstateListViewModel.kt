@@ -3,6 +3,7 @@ package com.kev.aviv.presentation.ui.list
 import androidx.lifecycle.viewModelScope
 import com.kev.aviv.common.base.BaseViewModel
 import com.kev.aviv.common.base.UiState
+import com.kev.aviv.common.loader.LoaderState
 import com.kev.aviv.common.result.asResult
 import com.kev.aviv.common.result.doOnFailure
 import com.kev.aviv.common.result.doOnLoading
@@ -21,20 +22,20 @@ class RealEstateListViewModel @Inject constructor(
     override fun createInitialState(): RealEstateListState = RealEstateListState()
 
     init {
-        getRealEstatesList()
+        fetchRealEstatesList()
     }
 
-    private fun getRealEstatesList() {
+    fun fetchRealEstatesList() {
         viewModelScope.launch {
             getRealEstatesListUseCase().asResult()
                 .doOnLoading {
-                    setState { copy(isLoading = true) }
+                    setState { copy(loaderState = LoaderState.IN_PROGRESS) }
                 }
                 .doOnSuccess {
-                    setState { copy(realEstates = it, isLoading = false) }
+                    setState { copy(realEstates = it, loaderState = LoaderState.SUCCEED) }
                 }
                 .doOnFailure {
-                    setState { copy(isLoading = false) }
+                    setState { copy(loaderState = LoaderState.FAILED) }
                 }
                 .collect()
         }
@@ -43,5 +44,5 @@ class RealEstateListViewModel @Inject constructor(
 
 data class RealEstateListState(
     val realEstates: List<RealEstateInfosDomain> = emptyList(),
-    val isLoading: Boolean = false
+    val loaderState: LoaderState = LoaderState.IN_PROGRESS
 ) : UiState

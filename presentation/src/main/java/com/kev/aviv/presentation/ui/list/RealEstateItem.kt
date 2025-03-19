@@ -1,71 +1,130 @@
 package com.kev.aviv.presentation.ui.list
 
-import android.util.Log
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.*
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
-import coil.compose.rememberAsyncImagePainter
+import com.kev.aviv.common.R
 import com.kev.aviv.domain.model.RealEstateInfosDomain
-import com.kev.aviv.presentation.R
+import java.text.DecimalFormat
+import java.text.NumberFormat
+import java.util.Locale
 
 @Composable
 fun RealEstateItem(realEstate: RealEstateInfosDomain) {
-Log.d("RealEstateItem", "RealEstateItem: $realEstate")
+    val formattedPrice = formatPrice(realEstate.price)
+
     Card(
         modifier = Modifier
             .fillMaxWidth()
             .padding(8.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+        colors = CardDefaults.cardColors(containerColor = Color.Transparent)
     ) {
         Column {
-            // Image
-            AsyncImage(
-                model = realEstate.imageUrl,
-                contentDescription = "Real Estate Image",
-                //contentScale = ContentScale.None,
+            Card(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(180.dp)
+                    .fillMaxWidth(),
+                shape = RoundedCornerShape(12.dp),
+                elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
             )
+            {
+                AsyncImage(
+                    model = realEstate.imageUrl?:R.drawable.empty_state,
+                    contentDescription = stringResource(R.string.list_screen_real_estate_image_content_desc),
+                    contentScale = ContentScale.Crop,
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(200.dp)
+                )
+            }
 
-            /*Image(
-                painter = rememberAsyncImagePainter(R.drawable.ic_launcher_foreground),
-                contentDescription = "Real Estate Image",
-                contentScale = ContentScale.Crop,
-                modifier = Modifier
-                    .fillMaxWidth()
-            )*/
-
-            // Infos
             Column(modifier = Modifier.padding(12.dp)) {
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
-                    text = "${realEstate.price} €",
+                    text = stringResource(R.string.list_screen_price_format, formattedPrice),
                     fontSize = 20.sp,
                     fontWeight = FontWeight.Bold,
-                    color = Color(0xFFD32F2F)
                 )
-                Spacer(modifier = Modifier.height(4.dp))
-                Text(text = "${realEstate.city} - ${realEstate.area} m²", fontSize = 16.sp)
-                realEstate.bedrooms?.let {
-                    Text(text = "$it chambres - ${realEstate.rooms} pièces", fontSize = 14.sp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(12.dp))
+                Row {
+                    Text(
+                        text = stringResource(R.string.list_screen_property_type_label),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold,
+                        color = Color(
+                            0xFF4CAF50
+                        )
+                    )
+                    Text(stringResource(R.string.list_screen_separator))
+                    Text(
+                        text = realEstate.propertyType,
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+
                 }
-                Text(text = realEstate.propertyType, fontSize = 14.sp, color = Color.Gray)
+                Spacer(modifier = Modifier.height(12.dp))
+                Row {
+                    Text(
+                        text = stringResource(R.string.list_screen_area_format, realEstate.area),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                    realEstate.rooms?.let {
+                        Text(stringResource(R.string.list_screen_separator))
+                        Text(
+                            text = stringResource(
+                                R.string.list_screen_rooms_format,
+                                it
+                            ),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+                    realEstate.bedrooms?.let {
+                        Text(stringResource(R.string.list_screen_separator))
+                        Text(
+                            text = stringResource(R.string.list_screen_bedrooms_format, it),
+                            fontSize = 16.sp,
+                            fontWeight = FontWeight.Bold
+                        )
+                    }
+
+                }
+                Spacer(modifier = Modifier.height(12.dp))
+                Text(
+                    text = realEstate.city,
+                    fontSize = 16.sp,
+                    color = Color(0xFFE91E63),
+                    fontStyle = FontStyle.Italic
+                )
                 Text(text = realEstate.professional, fontSize = 12.sp, color = Color.LightGray)
             }
         }
     }
+}
+
+fun formatPrice(price: Double): String {
+    val formatter = NumberFormat.getNumberInstance(Locale.FRANCE) as DecimalFormat
+    formatter.applyPattern("#,###")
+    return formatter.format(price)
 }
 
 @Preview(showBackground = true)
@@ -76,7 +135,7 @@ fun RealEstateItemPreview() {
             id = 1,
             city = "Paris",
             area = 100.0,
-            price = 750000.0,
+            price = 1750000.0,
             professional = "Agence XYZ",
             propertyType = "Appartement",
             offerType = 1,
