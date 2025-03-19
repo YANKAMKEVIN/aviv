@@ -1,6 +1,7 @@
 package com.kev.aviv.domain
 
 import com.kev.aviv.domain.repository.RealEstateRepository
+import com.kev.aviv.domain.usecase.GetRealEstateDetailsUseCase
 import com.kev.aviv.domain.usecase.GetRealEstatesListUseCase
 import dagger.Module
 import dagger.Provides
@@ -15,4 +16,10 @@ class DomainModule {
     @Provides
     fun provideGetRealEstatesListUseCase(realEstateRepository: RealEstateRepository): GetRealEstatesListUseCase =
         GetRealEstatesListUseCase(realEstateRepository::getRealEstateListings)
+
+    @Singleton
+    @Provides
+    fun provideGetRealEstateDetailsUseCase(realEstateRepository: RealEstateRepository): GetRealEstateDetailsUseCase =
+        GetRealEstateDetailsUseCase(realEstateRepository::getRealEstateDetails)
+
 }

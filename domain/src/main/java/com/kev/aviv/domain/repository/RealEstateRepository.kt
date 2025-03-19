@@ -16,4 +16,12 @@ interface RealEstateRepository {
      * @return A [Flow] emitting a list of [RealEstateInfosDomain] containing the list of real estate.
      */
     suspend fun getRealEstateListings(): Flow<List<RealEstateInfosDomain>>
+
+    /**
+     * Fetches the details of a specific real estate by its ID.
+     *
+     * @param id The ID of the real estate to fetch details for.
+     * @return A [Flow] emitting a [RealEstateInfosDomain] containing the details of the specified real estate.
+     */
+    suspend fun getRealEstateDetails(id: String): Flow<RealEstateInfosDomain>
 }

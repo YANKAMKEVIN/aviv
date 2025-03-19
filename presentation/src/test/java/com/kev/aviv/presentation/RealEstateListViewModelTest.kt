@@ -25,12 +25,9 @@ class RealEstateListViewModelTest {
     @MockK
     private lateinit var getRealEstatesListUseCase: GetRealEstatesListUseCase
 
-    private lateinit var viewModel: RealEstateListViewModel
-
     @Before
     fun setup() {
         MockKAnnotations.init(this)
-        //viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
     }
 
     @ExperimentalCoroutinesApi

@@ -30,6 +30,27 @@ class RealEstateRepositoryImpl @Inject constructor(
                 val realEstateListings = response.data.items.map { it.toDomain() }
                 emit(realEstateListings)
             }
+
+            is NetworkResponse.Failure -> {
+                throw Exception("Error ${response.error.message}: ${response.error.code}")
+            }
+        }
+    }
+
+    /**
+     * Fetches the details of a specific real estate by its ID from the data source and maps the result into the domain model.
+     * The result is emitted as a [Flow] containing the details of the specified real estate.
+     *
+     * @param id The ID of the real estate to fetch details for.
+     * @return A [Flow] emitting a [RealEstateInfosDomain] containing the details of the specified real estate.
+     */
+    override suspend fun getRealEstateDetails(id: String): Flow<RealEstateInfosDomain> = flow {
+        when (val response = realEstateDataSource.getRealEstateDetails(id)) {
+            is NetworkResponse.Success -> {
+                val realEstateDetails = response.data.toDomain()
+                emit(realEstateDetails)
+            }
+
             is NetworkResponse.Failure -> {
                 throw Exception("Error ${response.error.message}: ${response.error.code}")
             }

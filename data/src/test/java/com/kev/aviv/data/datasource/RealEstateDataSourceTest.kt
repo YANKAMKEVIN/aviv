@@ -72,4 +72,46 @@ class RealEstateDataSourceTest {
             assertEquals(errorMessage, result.error.message)
         }
 
+    @Test
+    fun `should return success response when getRealEstateDetails is successfully called`() =
+        runBlocking {
+            //Arrange
+            val realEstateDetails =
+                RealEstateInfosDTO(
+                    id = 3,
+                    city = "Germany",
+                    area = 180.0,
+                    price = 420000.0,
+                    professional = "Agence WKY",
+                    propertyType = "Villa",
+                    offerType = 3,
+                    bedrooms = 1,
+                    rooms = 4,
+                    url = "https://v.seloger.com/s/crop/590x3"
+                )
+
+            coEvery { realEstateApi.getRealEstateDetails(any()) } returns realEstateDetails
+
+            // Act
+            val result = dataSource.getRealEstateDetails("3")
+
+            // Assert
+            assertTrue(result is NetworkResponse.Success)
+            assertEquals(realEstateDetails, result.data)
+        }
+
+    @Test
+    fun `should return failure response when getRealEstateDetails fails with unknown error`() =
+        runBlocking {
+            // Arrange
+            val errorMessage = "Unknown error"
+            coEvery { realEstateApi.getRealEstateDetails(any()) } throws Exception(errorMessage)
+            // Act
+            val result = dataSource.getRealEstateDetails("1")
+            // Assert
+            assertTrue(result is NetworkResponse.Failure)
+            assertTrue(result.error is NetworkError.Unknown)
+            assertEquals(errorMessage, result.error.message)
+        }
+
 }

@@ -11,4 +11,12 @@
     <string name="list_screen_area_format">%1$s m²</string>
     <string name="list_screen_rooms_format">%1$s pièce</string>
     <string name="list_screen_bedrooms_format">%1$s chambres</string>
+    <string name="list_screen_offer_type_build">Achat projet de construction</string>
+    <string name="list_screen_offer_type_house">Achat maison</string>
+    <string name="contact_action_button_call">Appeler</string>
+    <string name="contact_action_button_message">Message</string>
+    <string name="details_screen_proposition_button">Proposer un prix</string>
+    <string name="loan_simulation_text">Simuler mon credit</string>
+    <string name="loan_simulation_description">Plus d\'infos</string>
+    <string name="price_per_square_meter_text">%1$s / m²</string>
 </resources>

@@ -24,10 +24,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kev.aviv.common.loader.LoaderScreen
-import com.kev.aviv.presentation.R
 
 @Composable
 fun RealEstateListRoute(
+    onNavigateToDetail: (id: String) -> Unit,
     viewModel: RealEstateListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -35,13 +35,14 @@ fun RealEstateListRoute(
     LoaderScreen(
         state = state.loaderState,
         onRetry = viewModel::fetchRealEstatesList,
-        screenComposable = { RealEstateListScreen(state) }
+        screenComposable = { RealEstateListScreen(state, onNavigateToDetail) }
     )
 }
 
 @Composable
 fun RealEstateListScreen(
-    state: RealEstateListState
+    state: RealEstateListState,
+    onNavigateToDetail: (id: String) -> Unit
 ) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
@@ -58,7 +59,7 @@ fun RealEstateListScreen(
         Spacer(modifier = Modifier.height(16.dp))
         LazyColumn {
             items(state.realEstates) { realEstate ->
-                RealEstateItem(realEstate)
+                RealEstateItem(realEstate, onNavigateToDetail)
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -76,6 +77,7 @@ fun RealEstateListScreen(
 @Preview
 fun RealEstateListScreenPreview() {
     RealEstateListScreen(
-        state = RealEstateListState()
+        state = RealEstateListState(),
+        onNavigateToDetail = {}
     )
 }
