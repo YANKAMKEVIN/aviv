@@ -21,7 +21,6 @@ class RealEstateDetailsViewModel @Inject constructor(
 ) : BaseViewModel<RealEstateDetailsState>() {
     override fun createInitialState(): RealEstateDetailsState = RealEstateDetailsState()
 
-
     fun fetchRealEstateDetails(id: String) {
         viewModelScope.launch {
             getRealEstateDetailsUseCase(id).asResult()
