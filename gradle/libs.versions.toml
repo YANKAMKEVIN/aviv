@@ -1,30 +1,29 @@
 [versions]
-agp = "8.6.1"
+agp = "8.9.0"
 coreTesting = "2.1.0"
 junitJupiterApi = "5.7.0"
 junitJupiterEngine = "5.7.0"
-kotlin = "1.9.0"
-hilt = "2.48"
+kotlin = "2.1.10"
+hilt = "2.55"
 coreKtx = "1.15.0"
 junit = "4.13.2"
 junitVersion = "1.2.1"
 espressoCore = "3.6.1"
 kotlinTest = "1.8.10"
 lifecycleRuntimeKtx = "2.8.7"
-activityCompose = "1.9.3"
-composeBom = "2024.04.01"
+activityCompose = "1.10.1"
+composeBom = "2025.03.00"
 kotlinxCoroutines = "1.7.3"
 mockk = "1.13.4"
 retrofit = "2.9.0"
 coil = "2.4.0"
-navigationCompose = "2.8.5"
+navigationCompose = "2.8.9"
 androidxHiltNavigationCompose="1.2.0"
-junitJunit = "4.12"
+junitJunit = "4.13.2"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
 androidx-core-testing = { module = "androidx.arch.core:core-testing", version.ref = "coreTesting" }
-junit = { group = "junit", name = "junit", version.ref = "junit" }
 androidx-junit = { group = "androidx.test.ext", name = "junit", version.ref = "junitVersion" }
 androidx-espresso-core = { group = "androidx.test.espresso", name = "espresso-core", version.ref = "espressoCore" }
 androidx-lifecycle-runtime-ktx = { group = "androidx.lifecycle", name = "lifecycle-runtime-ktx", version.ref = "lifecycleRuntimeKtx" }
@@ -57,3 +56,5 @@ androidApplication = { id = "com.android.application", version.ref = "agp" }
 jetbrainsKotlinAndroid = { id = "org.jetbrains.kotlin.android", version.ref = "kotlin" }
 android-library = { id = "com.android.library", version.ref = "agp" }
 hilt = { id = "com.google.dagger.hilt.android", version.ref = "hilt" }
+ksp = { id = "com.google.devtools.ksp", version.ref = "kotlin" }
+kotlin-compose = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }

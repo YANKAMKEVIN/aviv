@@ -1,8 +1,9 @@
 plugins {
     alias(libs.plugins.jetbrainsKotlinAndroid)
     alias(libs.plugins.hilt)
-    id("kotlin-kapt")
+    alias(libs.plugins.kotlin.compose)
     id("com.android.library")
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -61,7 +62,7 @@ dependencies {
 
     //Hilt
     implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
+    ksp(libs.hilt.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
     //Retrofit
@@ -76,7 +77,7 @@ dependencies {
     implementation(libs.coil)
 
     //Test
-    testImplementation(libs.junit)
+    testImplementation(libs.junit.junit)
     androidTestImplementation(libs.androidx.junit)
     androidTestImplementation(libs.androidx.espresso.core)
     androidTestImplementation(platform(libs.androidx.compose.bom))
@@ -88,4 +89,6 @@ dependencies {
     //Debug
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+   implementation(project(":core:common"))
 }
