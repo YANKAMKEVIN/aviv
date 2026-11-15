@@ -135,4 +135,20 @@ class RealEstateListScreenTest {
         // Assert
         assert(!isClicked)
     }
+
+    @Test
+    fun testRealEstateListScreen_EmptyList_ShowsEmptyStateWithRefresh() {
+        var refreshed = false
+        composeTestRule.setContent {
+            RealEstateListScreen(
+                state = RealEstateListState(realEstates = emptyList(), loaderState = LoaderState.SUCCEED),
+                onNavigateToDetail = {},
+                onRefresh = { refreshed = true }
+            )
+        }
+
+        composeTestRule.onNodeWithText("Aucune annonce pour le moment").assertIsDisplayed()
+        composeTestRule.onNodeWithText("Actualiser").performClick()
+        assert(refreshed)
+    }
 }
