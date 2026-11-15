@@ -3,7 +3,9 @@ package com.kev.aviv.presentation.ui.details
 import androidx.lifecycle.viewModelScope
 import com.kev.aviv.common.base.BaseViewModel
 import com.kev.aviv.common.base.UiState
+import com.kev.aviv.common.loader.ErrorType
 import com.kev.aviv.common.loader.LoaderState
+import com.kev.aviv.common.loader.toErrorType
 import com.kev.aviv.common.result.asResult
 import com.kev.aviv.common.result.doOnFailure
 import com.kev.aviv.common.result.doOnLoading
@@ -30,8 +32,8 @@ class RealEstateDetailsViewModel @Inject constructor(
                 .doOnSuccess {
                     setState { copy(details = it, loaderState = LoaderState.SUCCEED) }
                 }
-                .doOnFailure {
-                    setState { copy(loaderState = LoaderState.FAILED) }
+                .doOnFailure { error ->
+                    setState { copy(loaderState = LoaderState.FAILED, errorType = error.toErrorType()) }
                 }
                 .collect()
         }
@@ -40,5 +42,6 @@ class RealEstateDetailsViewModel @Inject constructor(
 
 data class RealEstateDetailsState(
     val details: RealEstateInfosDomain? = null,
-    val loaderState: LoaderState = LoaderState.IN_PROGRESS
+    val loaderState: LoaderState = LoaderState.IN_PROGRESS,
+    val errorType: ErrorType? = null
 ) : UiState

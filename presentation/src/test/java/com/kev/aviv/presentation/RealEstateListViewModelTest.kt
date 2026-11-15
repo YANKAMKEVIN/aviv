@@ -1,6 +1,9 @@
 package com.kev.aviv.presentation
 
+import com.kev.aviv.common.loader.ErrorType
 import com.kev.aviv.common.loader.LoaderState
+import com.kev.aviv.common.network.ApiException
+import com.kev.aviv.common.network.NetworkError
 import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.domain.usecase.GetRealEstatesListUseCase
 import com.kev.aviv.presentation.ui.list.RealEstateListViewModel
@@ -105,5 +108,30 @@ class RealEstateListViewModelTest {
 
         //Then
         assert(viewModel.state.value.loaderState == LoaderState.FAILED)
+    }
+
+    @Test
+    fun `offline failure exposes a network error`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returns flow {
+            throw ApiException(NetworkError.UnResolveAddress("Unable to resolve host"))
+        }
+
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.loaderState == LoaderState.FAILED)
+        assert(viewModel.state.value.errorType == ErrorType.NETWORK)
+    }
+
+    @Test
+    fun `server failure exposes a server error`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returns flow {
+            throw ApiException(NetworkError.InternalServerError("Internal server error"))
+        }
+
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.errorType == ErrorType.SERVER)
     }
 }
