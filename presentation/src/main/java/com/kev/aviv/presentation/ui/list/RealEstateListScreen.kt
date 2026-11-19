@@ -35,6 +35,7 @@ fun RealEstateListRoute(
     LoaderScreen(
         state = state.loaderState,
         onRetry = viewModel::fetchRealEstatesList,
+        errorType = state.errorType,
         screenComposable = { RealEstateListScreen(state, onNavigateToDetail) }
     )
 }

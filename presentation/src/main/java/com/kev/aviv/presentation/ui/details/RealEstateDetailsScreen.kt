@@ -23,6 +23,7 @@ fun RealEstateDetailsRoute(
     LoaderScreen(
         state = state.loaderState,
         onRetry = { viewModel.fetchRealEstateDetails(id) },
+        errorType = state.errorType,
         screenComposable = {
             RealEstateDetailsScreen(state = state) {
                 viewModel.fetchRealEstateDetails(id)

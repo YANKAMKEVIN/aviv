@@ -28,7 +28,7 @@ object NetworkUtil {
             NetworkResponse.Failure(mapError(e))
         } catch (e: IOException) {
             // Handle IOExceptions (e.g., network errors)
-            NetworkResponse.Failure(NetworkError.Unknown(e.message ?: "Network Error"))
+            NetworkResponse.Failure(NetworkError.UnResolveAddress(e.message ?: "Network Error"))
         } catch (e: Exception) {
             // Catch any other exceptions and emit an unknown error
             NetworkResponse.Failure(NetworkError.Unknown(e.message ?: "Unknown Error"))

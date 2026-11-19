@@ -114,4 +114,15 @@ class RealEstateDataSourceTest {
             assertEquals(errorMessage, result.error.message)
         }
 
+
+    @Test
+    fun `should return an UnResolveAddress failure when the device is offline`() =
+        runBlocking {
+            coEvery { realEstateApi.getRealEstateListings() } throws java.net.UnknownHostException("Unable to resolve host")
+
+            val result = dataSource.getRealEstateListings()
+
+            assertTrue(result is NetworkResponse.Failure)
+            assertTrue(result.error is NetworkError.UnResolveAddress)
+        }
 }

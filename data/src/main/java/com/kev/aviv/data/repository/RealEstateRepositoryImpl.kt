@@ -1,5 +1,6 @@
 package com.kev.aviv.data.repository
 
+import com.kev.aviv.common.network.ApiException
 import com.kev.aviv.common.network.NetworkResponse
 import com.kev.aviv.data.datasource.RealEstateDataSource
 import com.kev.aviv.data.mapper.RealEstateMapper.toDomain
@@ -32,7 +33,7 @@ class RealEstateRepositoryImpl @Inject constructor(
             }
 
             is NetworkResponse.Failure -> {
-                throw Exception("Error ${response.error.message}: ${response.error.code}")
+                throw ApiException(response.error)
             }
         }
     }
@@ -52,7 +53,7 @@ class RealEstateRepositoryImpl @Inject constructor(
             }
 
             is NetworkResponse.Failure -> {
-                throw Exception("Error ${response.error.message}: ${response.error.code}")
+                throw ApiException(response.error)
             }
         }
     }

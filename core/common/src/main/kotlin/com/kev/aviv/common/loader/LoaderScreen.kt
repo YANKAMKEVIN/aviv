@@ -27,6 +27,7 @@ import com.kev.aviv.common.R
 fun LoaderScreen(
     state: LoaderState,
     onRetry: () -> Unit,
+    errorType: ErrorType? = null,
     screenComposable: @Composable () -> Unit
 ) {
     Box(
@@ -35,7 +36,7 @@ fun LoaderScreen(
     ) {
         when (state) {
             LoaderState.IN_PROGRESS -> CircularLoader()
-            LoaderState.FAILED -> ReloadScreen(onRetry)
+            LoaderState.FAILED -> ReloadScreen(onRetry, errorType)
             LoaderState.SUCCEED -> screenComposable()
         }
     }
@@ -44,6 +45,7 @@ fun LoaderScreen(
 @Composable
 fun ReloadScreen(
     onRetry: () -> Unit,
+    errorType: ErrorType? = null,
 ) {
     Column(
         modifier = Modifier
@@ -74,7 +76,13 @@ fun ReloadScreen(
         )
         Spacer(Modifier.height(8.dp))
         Text(
-            text = stringResource(R.string.error_screen_description),
+            text = stringResource(
+                when (errorType) {
+                    ErrorType.NETWORK -> R.string.error_screen_network_description
+                    ErrorType.SERVER -> R.string.error_screen_server_description
+                    else -> R.string.error_screen_description
+                }
+            ),
             modifier = Modifier
                 .fillMaxWidth(),
             textAlign = TextAlign.Center,
