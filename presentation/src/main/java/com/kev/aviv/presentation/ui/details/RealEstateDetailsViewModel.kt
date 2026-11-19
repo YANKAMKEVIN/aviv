@@ -11,6 +11,7 @@ import com.kev.aviv.common.result.doOnSuccess
 import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.domain.usecase.GetRealEstateDetailsUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -21,8 +22,14 @@ class RealEstateDetailsViewModel @Inject constructor(
 ) : BaseViewModel<RealEstateDetailsState>() {
     override fun createInitialState(): RealEstateDetailsState = RealEstateDetailsState()
 
+    /** Request of the listing currently displayed; cancelled when another one is requested. */
+    private var detailsJob: Job? = null
+
     fun fetchRealEstateDetails(id: String) {
-        viewModelScope.launch {
+        // On tablets the detail pane stays on screen while the user taps other listings: a slow
+        // answer for a previous listing must not replace the one requested last.
+        detailsJob?.cancel()
+        detailsJob = viewModelScope.launch {
             getRealEstateDetailsUseCase(id).asResult()
                 .doOnLoading {
                     setState { copy(loaderState = LoaderState.IN_PROGRESS) }
