@@ -74,7 +74,11 @@ fun RealEstateItem(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                     fontStyle = FontStyle.Italic
                 )
-                Text(text = realEstate.professional, fontSize = 12.sp, color = Color.LightGray)
+                Text(
+                    text = realEstate.professional,
+                    style = MaterialTheme.typography.labelMedium,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
             }
         }
     }
