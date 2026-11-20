@@ -17,11 +17,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.selected
 import androidx.compose.ui.semantics.semantics
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.kev.aviv.common.R
 import com.kev.aviv.common.utils.toFormatPrice
 import com.kev.aviv.domain.model.RealEstateInfosDomain
@@ -41,7 +40,7 @@ fun RealEstateItem(
         onClick = { onClick(realEstate.id.toString()) },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(8.dp)
+            .padding(horizontal = 8.dp)
             .semantics { selected = isSelected },
         shape = RoundedCornerShape(12.dp),
         colors = CardDefaults.cardColors(
@@ -54,26 +53,24 @@ fun RealEstateItem(
             RealEstateImageCard(realEstate)
 
             Column(modifier = Modifier.padding(12.dp)) {
-                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = stringResource(R.string.list_screen_card_title, realEstate.propertyType, realEstate.city),
+                    style = MaterialTheme.typography.titleMedium,
+                    maxLines = 2,
+                    overflow = TextOverflow.Ellipsis
+                )
+                Spacer(modifier = Modifier.height(4.dp))
                 Text(
                     text = stringResource(
                         R.string.list_screen_price_format,
                         realEstate.price.toFormatPrice()
                     ),
-                    fontSize = 20.sp,
-                    fontWeight = FontWeight.Bold,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold
                 )
-                Spacer(modifier = Modifier.height(12.dp))
-                RealEstateType(realEstate.propertyType)
-                Spacer(modifier = Modifier.height(12.dp))
+                Spacer(modifier = Modifier.height(8.dp))
                 RealEstateInfos(realEstate)
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = realEstate.city,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontStyle = FontStyle.Italic
-                )
+                Spacer(modifier = Modifier.height(8.dp))
                 Text(
                     text = realEstate.professional,
                     style = MaterialTheme.typography.labelMedium,

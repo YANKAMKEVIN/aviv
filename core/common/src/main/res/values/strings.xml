@@ -17,8 +17,7 @@
     <string name="list_screen_empty_description">De nouveaux biens sont publiés régulièrement. Revenez un peu plus tard ou actualisez la liste.</string>
     <string name="list_screen_empty_refresh">Actualiser</string>
     <string name="list_screen_price_format">%1$s €</string>
-    <string name="list_screen_property_type_label">Type de bien</string>
-    <string name="list_screen_separator">" • "</string>
+    <string name="list_screen_card_title">%1$s · %2$s</string>
     <string name="list_screen_area_format">%1$s m²</string>
     <plurals name="list_screen_rooms">
         <item quantity="one">%1$d pièce</item>
