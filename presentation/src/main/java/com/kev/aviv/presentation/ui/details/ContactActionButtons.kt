@@ -1,17 +1,21 @@
 package com.kev.aviv.presentation.ui.details
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.MailOutline
-import androidx.compose.material3.FloatingActionButton
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -22,52 +26,50 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kev.aviv.common.R
 
+/** Bottom bar of the detail page: contacting the agency stays within thumb reach. */
 @Composable
 fun ContactActionButtons(
     onCall: () -> Unit = {},
     onMessage: () -> Unit = {}
 ) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
-    ) {
-        FloatingActionButton(
-            onClick = { onCall() }, modifier = Modifier.weight(1f),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
+    Surface(shadowElevation = 8.dp) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .navigationBarsPadding()
+                .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            Button(
+                onClick = onCall,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Icon(
                     Icons.Default.Call,
-                    contentDescription = stringResource(R.string.contact_action_button_call)
+                    contentDescription = stringResource(R.string.contact_action_button_call),
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(
                     text = stringResource(R.string.contact_action_button_call),
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
             }
-        }
-        Spacer(modifier = Modifier.width(16.dp))
-        FloatingActionButton(
-            onClick = { onMessage() }, modifier = Modifier.weight(1f),
-            containerColor = MaterialTheme.colorScheme.primary,
-            contentColor = MaterialTheme.colorScheme.onPrimary
-        ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center
+            Spacer(modifier = Modifier.width(12.dp))
+            OutlinedButton(
+                onClick = onMessage,
+                modifier = Modifier
+                    .weight(1f)
+                    .height(52.dp)
             ) {
                 Icon(
                     Icons.Default.MailOutline,
-                    contentDescription = stringResource(R.string.contact_action_button_message)
+                    contentDescription = stringResource(R.string.contact_action_button_message),
+                    modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
-                Spacer(modifier = Modifier.width(4.dp))
+                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
                 Text(
                     text = stringResource(R.string.contact_action_button_message),
                     fontSize = 16.sp,

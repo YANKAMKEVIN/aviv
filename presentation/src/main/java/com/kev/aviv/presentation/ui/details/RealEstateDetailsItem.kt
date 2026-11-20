@@ -71,7 +71,13 @@ fun RealEstateDetailsItem(
     }
 
     Scaffold(
-        snackbarHost = { SnackbarHost(snackbarHostState) }
+        snackbarHost = { SnackbarHost(snackbarHostState) },
+        bottomBar = {
+            ContactActionButtons(
+                onCall = { if (!context.openDialer()) showMessage(noDialer) },
+                onMessage = { context.shareText(shareText, shareTitle) }
+            )
+        }
     ) { innerPadding ->
         Column(
             modifier = Modifier
@@ -136,13 +142,7 @@ fun RealEstateDetailsItem(
 
                 Spacer(modifier = Modifier.height(24.dp))
                 AgencyRow(realEstate.professional)
-
-                Spacer(modifier = Modifier.weight(1.0f))
-
-                ContactActionButtons(
-                    onCall = { if (!context.openDialer()) showMessage(noDialer) },
-                    onMessage = { context.shareText(shareText, shareTitle) }
-                )
+                Spacer(modifier = Modifier.height(16.dp))
             }
         }
     }
