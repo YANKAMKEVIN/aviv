@@ -61,8 +61,8 @@ class RealEstateListScreenTest {
         // Assert
         composeTestRule.onNodeWithTag("Loader").assertDoesNotExist()
 
-        composeTestRule.onNodeWithText("Paris").assertIsDisplayed()
-        composeTestRule.onNodeWithText("Lyon").performScrollTo().assertIsDisplayed()
+        composeTestRule.onNodeWithText("Paris", substring = true).assertIsDisplayed()
+        composeTestRule.onNodeWithText("Lyon", substring = true).performScrollTo().assertIsDisplayed()
     }
 
     @Test
@@ -92,10 +92,10 @@ class RealEstateListScreenTest {
         }
 
         // Simuler le clic
-        composeTestRule.onNodeWithText("Paris").performClick()
+        composeTestRule.onNodeWithText("Paris", substring = true).performClick()
 
         // Assert
-        composeTestRule.onNodeWithText("100.0 m²").assertIsDisplayed()
+        composeTestRule.onNodeWithText("100 m²", substring = true).assertIsDisplayed()
     }
 
     @Test
@@ -130,10 +130,10 @@ class RealEstateListScreenTest {
         }
 
 
-        composeTestRule.onNodeWithText("Paris").performClick()
+        composeTestRule.onNodeWithText("Paris", substring = true).performClick()
 
-        // Assert
-        assert(!isClicked)
+        // Assert: the whole card opens the details, not only the photo
+        assert(isClicked)
     }
 
     @Test

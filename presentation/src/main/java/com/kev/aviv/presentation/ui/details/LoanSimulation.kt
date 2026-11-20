@@ -12,8 +12,8 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -24,12 +24,11 @@ fun LoanSimulation(onClick: () -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable { onClick() }
+            .clickable(role = Role.Button) { onClick() }
     ) {
         Icon(
             Icons.Default.Info,
-            contentDescription = stringResource(R.string.loan_simulation_description),
-            tint = Color.Black
+            contentDescription = null
         )
         Spacer(modifier = Modifier.width(4.dp))
         Text(
@@ -40,8 +39,7 @@ fun LoanSimulation(onClick: () -> Unit) {
         Spacer(modifier = Modifier.width(4.dp))
         Icon(
             Icons.AutoMirrored.Filled.KeyboardArrowRight,
-            contentDescription = stringResource(R.string.loan_simulation_description),
-            tint = Color.Black
+            contentDescription = null
         )
     }
 }

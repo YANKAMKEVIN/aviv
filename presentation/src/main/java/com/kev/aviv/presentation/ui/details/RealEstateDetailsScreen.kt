@@ -8,10 +8,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kev.aviv.common.loader.LoaderScreen
 import com.kev.aviv.common.loader.ReloadScreen
+import com.kev.aviv.presentation.ui.RealEstateDetailsSkeleton
 
 @Composable
 fun RealEstateDetailsRoute(
     id: String,
+    onBack: (() -> Unit)? = null,
     viewModel: RealEstateDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -24,10 +26,13 @@ fun RealEstateDetailsRoute(
         state = state.loaderState,
         onRetry = { viewModel.fetchRealEstateDetails(id) },
         errorType = state.errorType,
+        loadingContent = { RealEstateDetailsSkeleton() },
         screenComposable = {
-            RealEstateDetailsScreen(state = state) {
-                viewModel.fetchRealEstateDetails(id)
-            }
+            RealEstateDetailsScreen(
+                state = state,
+                onBack = onBack,
+                onRetry = { viewModel.fetchRealEstateDetails(id) }
+            )
         }
     )
 }
@@ -35,10 +40,11 @@ fun RealEstateDetailsRoute(
 @Composable
 fun RealEstateDetailsScreen(
     state: RealEstateDetailsState,
+    onBack: (() -> Unit)? = null,
     onRetry: () -> Unit = {}
 ) {
     if (state.details != null)
-        RealEstateDetailsItem(state.details)
+        RealEstateDetailsItem(state.details, onBack)
     else
         ReloadScreen(onRetry)
 }

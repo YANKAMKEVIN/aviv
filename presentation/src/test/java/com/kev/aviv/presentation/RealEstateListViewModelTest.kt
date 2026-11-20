@@ -11,6 +11,7 @@ import com.kev.aviv.testing.utils.MainDispatcherRule
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.impl.annotations.MockK
+import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.flow.flowOf
@@ -132,6 +133,68 @@ class RealEstateListViewModelTest {
         val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
         advanceUntilIdle()
 
+        assert(viewModel.state.value.errorType == ErrorType.SERVER)
+    }
+
+    private val paris = RealEstateInfosDomain(
+        id = 1, city = "Paris", area = 100.0, price = 1750000.0, professional = "Agence XYZ",
+        propertyType = "Appartement", offerType = 1, bedrooms = 3, rooms = 5, imageUrl = null
+    )
+    private val lyon = paris.copy(id = 2, city = "Lyon")
+
+    @Test
+    fun `refresh keeps the listings on screen while reloading`() = runTest {
+        val answer = CompletableDeferred<List<RealEstateInfosDomain>>()
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(listOf(paris)),
+            flow { emit(answer.await()) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        viewModel.refresh()
+
+        assert(viewModel.state.value.isRefreshing)
+        assert(viewModel.state.value.loaderState == LoaderState.SUCCEED)
+        assert(viewModel.state.value.realEstates == listOf(paris))
+
+        answer.complete(listOf(paris, lyon))
+        advanceUntilIdle()
+
+        assert(!viewModel.state.value.isRefreshing)
+        assert(viewModel.state.value.realEstates == listOf(paris, lyon))
+    }
+
+    @Test
+    fun `a failed refresh keeps the listings already shown`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(listOf(paris)),
+            flow { throw ApiException(NetworkError.UnResolveAddress("Unable to resolve host")) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        viewModel.refresh()
+        advanceUntilIdle()
+
+        assert(!viewModel.state.value.isRefreshing)
+        assert(viewModel.state.value.loaderState == LoaderState.SUCCEED)
+        assert(viewModel.state.value.realEstates == listOf(paris))
+    }
+
+    @Test
+    fun `a failed refresh with nothing to show displays the error`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(emptyList()),
+            flow { throw ApiException(NetworkError.InternalServerError("Internal server error")) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        viewModel.refresh()
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.loaderState == LoaderState.FAILED)
         assert(viewModel.state.value.errorType == ErrorType.SERVER)
     }
 }

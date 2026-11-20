@@ -28,6 +28,7 @@ fun LoaderScreen(
     state: LoaderState,
     onRetry: () -> Unit,
     errorType: ErrorType? = null,
+    loadingContent: @Composable () -> Unit = { CircularLoader() },
     screenComposable: @Composable () -> Unit
 ) {
     Box(
@@ -35,7 +36,7 @@ fun LoaderScreen(
         contentAlignment = Alignment.Center
     ) {
         when (state) {
-            LoaderState.IN_PROGRESS -> CircularLoader()
+            LoaderState.IN_PROGRESS -> loadingContent()
             LoaderState.FAILED -> ReloadScreen(onRetry, errorType)
             LoaderState.SUCCEED -> screenComposable()
         }
