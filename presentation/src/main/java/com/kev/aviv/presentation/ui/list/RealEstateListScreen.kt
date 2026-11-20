@@ -9,10 +9,12 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
+import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -49,6 +51,7 @@ fun RealEstateListRoute(
                     state = state,
                     onNavigateToDetail = onNavigateToDetail,
                     onRefresh = viewModel::fetchRealEstatesList,
+                    onPullRefresh = viewModel::refresh,
                     selectedId = selectedId
                 )
             }
@@ -74,11 +77,13 @@ fun RealEstateListTitle() {
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RealEstateListScreen(
     state: RealEstateListState,
     onNavigateToDetail: (id: String) -> Unit,
     onRefresh: () -> Unit = {},
+    onPullRefresh: () -> Unit = {},
     selectedId: String? = null
 ) {
     Column {
@@ -86,19 +91,25 @@ fun RealEstateListScreen(
             RealEstateEmptyList(onRefresh = onRefresh)
             return@Column
         }
-        LazyColumn {
-            items(state.realEstates) { realEstate ->
-                RealEstateItem(
-                    realEstate = realEstate,
-                    onClick = onNavigateToDetail,
-                    isSelected = realEstate.id.toString() == selectedId
-                )
-                HorizontalDivider(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = 8.dp),
-                    color = MaterialTheme.colorScheme.outlineVariant
-                )
+        PullToRefreshBox(
+            isRefreshing = state.isRefreshing,
+            onRefresh = onPullRefresh,
+            modifier = Modifier.fillMaxSize()
+        ) {
+            LazyColumn(modifier = Modifier.fillMaxSize()) {
+                items(state.realEstates) { realEstate ->
+                    RealEstateItem(
+                        realEstate = realEstate,
+                        onClick = onNavigateToDetail,
+                        isSelected = realEstate.id.toString() == selectedId
+                    )
+                    HorizontalDivider(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(vertical = 8.dp),
+                        color = MaterialTheme.colorScheme.outlineVariant
+                    )
+                }
             }
         }
     }
