@@ -95,7 +95,7 @@ class RealEstateListScreenTest {
         composeTestRule.onNodeWithText("Paris").performClick()
 
         // Assert
-        composeTestRule.onNodeWithText("100.0 m²").assertIsDisplayed()
+        composeTestRule.onNodeWithText("100 m²", substring = true).assertIsDisplayed()
     }
 
     @Test

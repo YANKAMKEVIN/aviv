@@ -20,6 +20,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kev.aviv.common.R
+import com.kev.aviv.common.utils.pricePerSquareMeter
 import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.presentation.ui.RealEstateImage
 import com.kev.aviv.presentation.ui.RealEstateInfos
@@ -53,7 +54,10 @@ fun RealEstateDetailsItem(realEstate: RealEstateInfosDomain) {
                 fontStyle = FontStyle.Italic
             )
             Spacer(modifier = Modifier.height(20.dp))
-            PriceDetails(realEstate.price)
+            PriceDetails(
+                realEstatePrice = realEstate.price,
+                squareMeterPrice = pricePerSquareMeter(realEstate.price, realEstate.area)
+            )
             Spacer(modifier = Modifier.height(8.dp))
             LoanSimulation(onClick = {})
             Button(

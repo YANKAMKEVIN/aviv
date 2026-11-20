@@ -15,8 +15,9 @@ import androidx.compose.ui.unit.sp
 import com.kev.aviv.common.R
 import com.kev.aviv.common.utils.toFormatPrice
 
+/** Price of the listing, followed by its price per m² when the surface is known. */
 @Composable
-fun PriceDetails(realEstatePrice: Double, squareMeterPrice: Double = 34500.0) {
+fun PriceDetails(realEstatePrice: Double, squareMeterPrice: Double? = null) {
     Row(verticalAlignment = Alignment.Bottom) {
         Text(
             text = stringResource(
@@ -26,13 +27,15 @@ fun PriceDetails(realEstatePrice: Double, squareMeterPrice: Double = 34500.0) {
             fontSize = 20.sp,
             fontWeight = FontWeight.Bold,
         )
-        Spacer(modifier = Modifier.width(4.dp))
-        Text(
-            text = stringResource(
-                R.string.price_per_square_meter_text,
-                squareMeterPrice.toFormatPrice()
-            ),
-            fontSize = 12.sp, color = Color.LightGray
-        )
+        if (squareMeterPrice != null) {
+            Spacer(modifier = Modifier.width(4.dp))
+            Text(
+                text = stringResource(
+                    R.string.price_per_square_meter_text,
+                    squareMeterPrice.toFormatPrice()
+                ),
+                fontSize = 12.sp, color = Color.LightGray
+            )
+        }
     }
 }
