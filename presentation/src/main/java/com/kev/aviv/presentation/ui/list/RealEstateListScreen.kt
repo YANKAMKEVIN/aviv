@@ -26,6 +26,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kev.aviv.common.loader.LoaderScreen
+import com.kev.aviv.presentation.ui.RealEstateListSkeleton
 
 @Composable
 fun RealEstateListRoute(
@@ -35,28 +36,28 @@ fun RealEstateListRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    LoaderScreen(
-        state = state.loaderState,
-        onRetry = viewModel::fetchRealEstatesList,
-        errorType = state.errorType,
-        screenComposable = {
-            RealEstateListScreen(
-                state = state,
-                onNavigateToDetail = onNavigateToDetail,
-                onRefresh = viewModel::fetchRealEstatesList,
-                selectedId = selectedId
-            )
-        }
-    )
+    Column {
+        // The title stays on screen while loading and on error.
+        RealEstateListTitle()
+        LoaderScreen(
+            state = state.loaderState,
+            onRetry = viewModel::fetchRealEstatesList,
+            errorType = state.errorType,
+            loadingContent = { RealEstateListSkeleton() },
+            screenComposable = {
+                RealEstateListScreen(
+                    state = state,
+                    onNavigateToDetail = onNavigateToDetail,
+                    onRefresh = viewModel::fetchRealEstatesList,
+                    selectedId = selectedId
+                )
+            }
+        )
+    }
 }
 
 @Composable
-fun RealEstateListScreen(
-    state: RealEstateListState,
-    onNavigateToDetail: (id: String) -> Unit,
-    onRefresh: () -> Unit = {},
-    selectedId: String? = null
-) {
+fun RealEstateListTitle() {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
         Text(
@@ -70,6 +71,17 @@ fun RealEstateListScreen(
             textAlign = TextAlign.Center
         )
         Spacer(modifier = Modifier.height(16.dp))
+    }
+}
+
+@Composable
+fun RealEstateListScreen(
+    state: RealEstateListState,
+    onNavigateToDetail: (id: String) -> Unit,
+    onRefresh: () -> Unit = {},
+    selectedId: String? = null
+) {
+    Column {
         if (state.realEstates.isEmpty()) {
             RealEstateEmptyList(onRefresh = onRefresh)
             return@Column
