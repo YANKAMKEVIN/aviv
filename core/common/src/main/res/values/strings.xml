@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="error_screen_title">Oups il semblerait qu\'il y ait eu un soucis</string>
-    <string name="error_screen_description">Nous avons rencontré un soucis, veuillez réessayer s\'il vous plait</string>
+    <string name="error_screen_title">Une erreur est survenue</string>
+    <string name="error_screen_description">Le chargement n\'a pas abouti. Veuillez réessayer.</string>
     <string name="error_screen_network_description">Impossible de joindre le serveur. Vérifiez votre connexion internet puis réessayez.</string>
     <string name="error_screen_server_description">Le service est momentanément indisponible. Réessayez dans quelques instants.</string>
     <string name="error_screen_button_text">Réessayer</string>
-    <string name="list_screen_real_estate_image_content_desc">Real Estate Image</string>
+    <string name="list_screen_real_estate_image_content_desc">Photo du bien : %1$s à %2$s</string>
     <string name="loading_content_desc">Chargement en cours</string>
     <string name="list_screen_title">SE LOGER</string>
     <plurals name="list_screen_count">
@@ -33,8 +33,7 @@
     <string name="contact_action_button_message">Message</string>
     <string name="details_screen_proposition_button">Proposer un prix</string>
     <string name="details_pane_placeholder">Sélectionnez une annonce pour afficher son détail</string>
-    <string name="loan_simulation_text">Simuler mon credit</string>
-    <string name="loan_simulation_description">Plus d\'infos</string>
+    <string name="loan_simulation_text">Simuler mon crédit</string>
     <string name="details_title">%1$s à %2$s</string>
     <string name="details_back">Retour à la liste</string>
     <string name="details_agency_label">Annonce proposée par</string>

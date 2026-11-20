@@ -47,7 +47,7 @@ fun ContactActionButtons(
             ) {
                 Icon(
                     Icons.Default.Call,
-                    contentDescription = stringResource(R.string.contact_action_button_call),
+                    contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
@@ -66,7 +66,7 @@ fun ContactActionButtons(
             ) {
                 Icon(
                     Icons.Default.MailOutline,
-                    contentDescription = stringResource(R.string.contact_action_button_message),
+                    contentDescription = null,
                     modifier = Modifier.size(ButtonDefaults.IconSize)
                 )
                 Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))

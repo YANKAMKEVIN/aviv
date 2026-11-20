@@ -14,7 +14,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
@@ -27,7 +26,7 @@ const val REAL_ESTATE_IMAGE_RATIO = 16f / 9f
  * loads, when it fails, and for listings without a photo; the photo fades in over it.
  */
 @Composable
-fun RealEstateImage(imageUrl: String?, modifier: Modifier = Modifier) {
+fun RealEstateImage(imageUrl: String?, contentDescription: String?, modifier: Modifier = Modifier) {
     Box(
         modifier = modifier
             .fillMaxWidth()
@@ -47,7 +46,7 @@ fun RealEstateImage(imageUrl: String?, modifier: Modifier = Modifier) {
                     .data(imageUrl)
                     .crossfade(true)
                     .build(),
-                contentDescription = stringResource(com.kev.aviv.common.R.string.list_screen_real_estate_image_content_desc),
+                contentDescription = contentDescription,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier.matchParentSize()
             )

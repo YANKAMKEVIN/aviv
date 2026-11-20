@@ -91,7 +91,14 @@ fun RealEstateDetailsItem(
                 .verticalScroll(rememberScrollState())
         ) {
             Box {
-                RealEstateImage(imageUrl = realEstate.imageUrl)
+                RealEstateImage(
+                    imageUrl = realEstate.imageUrl,
+                    contentDescription = stringResource(
+                        R.string.list_screen_real_estate_image_content_desc,
+                        realEstate.propertyType,
+                        realEstate.city
+                    )
+                )
                 // Keeps the status bar icons readable over the photo.
                 Box(
                     modifier = Modifier

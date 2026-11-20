@@ -6,7 +6,9 @@ import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.kev.aviv.common.R
 import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.presentation.ui.RealEstateImage
 
@@ -18,6 +20,13 @@ fun RealEstateImageCard(realEstate: RealEstateInfosDomain) {
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     )
     {
-        RealEstateImage(realEstate.imageUrl)
+        RealEstateImage(
+            imageUrl = realEstate.imageUrl,
+            contentDescription = stringResource(
+                R.string.list_screen_real_estate_image_content_desc,
+                realEstate.propertyType,
+                realEstate.city
+            )
+        )
     }
 }
