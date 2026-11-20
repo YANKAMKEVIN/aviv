@@ -2,6 +2,7 @@ package com.kev.aviv.presentation.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -34,7 +35,7 @@ fun RealEstateListSkeleton() {
                     brush = brush,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(200.dp),
+                        .aspectRatio(REAL_ESTATE_IMAGE_RATIO),
                     shape = RoundedCornerShape(12.dp)
                 )
                 Column(modifier = Modifier.padding(12.dp)) {
@@ -59,7 +60,7 @@ fun RealEstateDetailsSkeleton() {
             brush = brush,
             modifier = Modifier
                 .fillMaxWidth()
-                .height(400.dp),
+                .aspectRatio(REAL_ESTATE_IMAGE_RATIO),
             shape = RoundedCornerShape(0.dp)
         )
         Column(modifier = Modifier.padding(12.dp)) {

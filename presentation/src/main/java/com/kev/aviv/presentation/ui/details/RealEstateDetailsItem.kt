@@ -80,7 +80,7 @@ fun RealEstateDetailsItem(
                 .verticalScroll(rememberScrollState())
         ) {
             Box {
-                RealEstateImage(imageUrl = realEstate.imageUrl, imageHeight = 400.dp)
+                RealEstateImage(imageUrl = realEstate.imageUrl)
                 if (onBack != null) {
                     IconButton(
                         onClick = onBack,
