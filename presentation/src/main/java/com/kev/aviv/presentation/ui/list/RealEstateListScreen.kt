@@ -1,6 +1,7 @@
 package com.kev.aviv.presentation.ui.list
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,14 +14,19 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.TopAppBarScrollBehavior
 import androidx.compose.material3.pulltorefresh.PullToRefreshBox
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
@@ -28,8 +34,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.kev.aviv.common.loader.LoaderScreen
+import com.kev.aviv.common.loader.LoaderState
 import com.kev.aviv.presentation.ui.RealEstateListSkeleton
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun RealEstateListRoute(
     onNavigateToDetail: (id: String) -> Unit,
@@ -38,43 +46,65 @@ fun RealEstateListRoute(
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
 
-    Column {
-        // The title stays on screen while loading and on error.
-        RealEstateListTitle()
-        LoaderScreen(
-            state = state.loaderState,
-            onRetry = viewModel::fetchRealEstatesList,
-            errorType = state.errorType,
-            loadingContent = { RealEstateListSkeleton() },
-            screenComposable = {
-                RealEstateListScreen(
-                    state = state,
-                    onNavigateToDetail = onNavigateToDetail,
-                    onRefresh = viewModel::fetchRealEstatesList,
-                    onPullRefresh = viewModel::refresh,
-                    selectedId = selectedId
-                )
-            }
-        )
+    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior()
+
+    Scaffold(
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection),
+        // The header stays on screen while loading, on error and when the list is empty.
+        topBar = {
+            RealEstateListTopBar(
+                count = state.realEstates.size.takeIf { state.loaderState == LoaderState.SUCCEED },
+                scrollBehavior = scrollBehavior
+            )
+        }
+    ) { innerPadding ->
+        Box(modifier = Modifier.padding(innerPadding)) {
+            LoaderScreen(
+                state = state.loaderState,
+                onRetry = viewModel::fetchRealEstatesList,
+                errorType = state.errorType,
+                loadingContent = { RealEstateListSkeleton() },
+                screenComposable = {
+                    RealEstateListScreen(
+                        state = state,
+                        onNavigateToDetail = onNavigateToDetail,
+                        onRefresh = viewModel::fetchRealEstatesList,
+                        onPullRefresh = viewModel::refresh,
+                        selectedId = selectedId
+                    )
+                }
+            )
+        }
     }
 }
 
+/** App bar of the list: logotype and number of listings; it hides while scrolling down. */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun RealEstateListTitle() {
-    Column {
-        Spacer(modifier = Modifier.height(16.dp))
-        Text(
-            text = stringResource(com.kev.aviv.common.R.string.list_screen_title),
-            modifier = Modifier.fillMaxWidth(),
-            style = MaterialTheme.typography.titleLarge.copy(
-                color = MaterialTheme.colorScheme.primary,
-                fontWeight = FontWeight.Bold,
-                fontStyle = FontStyle.Italic
-            ),
-            textAlign = TextAlign.Center
-        )
-        Spacer(modifier = Modifier.height(16.dp))
-    }
+fun RealEstateListTopBar(
+    count: Int?,
+    scrollBehavior: TopAppBarScrollBehavior? = null
+) {
+    TopAppBar(
+        title = {
+            Column {
+                Text(
+                    text = stringResource(com.kev.aviv.common.R.string.list_screen_title),
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.ExtraBold,
+                    color = MaterialTheme.colorScheme.primary
+                )
+                if (count != null && count > 0) {
+                    Text(
+                        text = pluralStringResource(com.kev.aviv.common.R.plurals.list_screen_count, count, count),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+                }
+            }
+        },
+        scrollBehavior = scrollBehavior
+    )
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
