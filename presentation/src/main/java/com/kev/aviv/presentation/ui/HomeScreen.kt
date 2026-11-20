@@ -54,7 +54,13 @@ fun HomeScreen(modifier: Modifier = Modifier) {
             val content = navigator.currentDestination?.contentKey?.toString()
             AnimatedPane {
                 if (content != null)
-                    RealEstateDetailsRoute(id = content)
+                    RealEstateDetailsRoute(
+                        id = content,
+                        // Single pane (phones): the details cover the list, offer a way back.
+                        onBack = if (isTwoPane) null else {
+                            { scope.launch { navigator.navigateBack() } }
+                        }
+                    )
                 else
                     DetailsPanePlaceholder()
             }

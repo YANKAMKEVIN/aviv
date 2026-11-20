@@ -24,14 +24,15 @@
         <item quantity="many">%1$d chambres</item>
         <item quantity="other">%1$d chambres</item>
     </plurals>
-    <string name="list_screen_offer_type_build">Achat projet de construction</string>
-    <string name="list_screen_offer_type_house">Achat maison</string>
     <string name="contact_action_button_call">Appeler</string>
     <string name="contact_action_button_message">Message</string>
     <string name="details_screen_proposition_button">Proposer un prix</string>
     <string name="details_pane_placeholder">Sélectionnez une annonce pour afficher son détail</string>
     <string name="loan_simulation_text">Simuler mon credit</string>
     <string name="loan_simulation_description">Plus d\'infos</string>
+    <string name="details_title">%1$s à %2$s</string>
+    <string name="details_back">Retour à la liste</string>
+    <string name="details_agency_label">Annonce proposée par</string>
     <string name="details_coming_soon">Bientôt disponible</string>
     <string name="details_no_dialer">Aucune application de téléphone sur cet appareil</string>
     <string name="details_share_title">Partager l\'annonce</string>

@@ -12,6 +12,7 @@ import com.kev.aviv.common.loader.ReloadScreen
 @Composable
 fun RealEstateDetailsRoute(
     id: String,
+    onBack: (() -> Unit)? = null,
     viewModel: RealEstateDetailsViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -25,9 +26,11 @@ fun RealEstateDetailsRoute(
         onRetry = { viewModel.fetchRealEstateDetails(id) },
         errorType = state.errorType,
         screenComposable = {
-            RealEstateDetailsScreen(state = state) {
-                viewModel.fetchRealEstateDetails(id)
-            }
+            RealEstateDetailsScreen(
+                state = state,
+                onBack = onBack,
+                onRetry = { viewModel.fetchRealEstateDetails(id) }
+            )
         }
     )
 }
@@ -35,10 +38,11 @@ fun RealEstateDetailsRoute(
 @Composable
 fun RealEstateDetailsScreen(
     state: RealEstateDetailsState,
+    onBack: (() -> Unit)? = null,
     onRetry: () -> Unit = {}
 ) {
     if (state.details != null)
-        RealEstateDetailsItem(state.details)
+        RealEstateDetailsItem(state.details, onBack)
     else
         ReloadScreen(onRetry)
 }
