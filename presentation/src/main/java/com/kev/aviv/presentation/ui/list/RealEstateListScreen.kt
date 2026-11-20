@@ -1,6 +1,5 @@
 package com.kev.aviv.presentation.ui.list
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -18,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -62,7 +60,7 @@ fun RealEstateListScreen(
             text = stringResource(com.kev.aviv.common.R.string.list_screen_title),
             modifier = Modifier.fillMaxWidth(),
             style = MaterialTheme.typography.titleLarge.copy(
-                color = Color.Red,
+                color = MaterialTheme.colorScheme.primary,
                 fontWeight = FontWeight.Bold,
                 fontStyle = FontStyle.Italic
             ),
@@ -79,10 +77,8 @@ fun RealEstateListScreen(
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(vertical = 8.dp)
-                        .height(1.dp)
-                        .background(Color.Blue)
-
+                        .padding(vertical = 8.dp),
+                    color = MaterialTheme.colorScheme.outlineVariant
                 )
             }
         }

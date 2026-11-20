@@ -11,10 +11,10 @@ import androidx.compose.material.icons.filled.Call
 import androidx.compose.material.icons.filled.MailOutline
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
@@ -34,10 +34,8 @@ fun ContactActionButtons(
     ) {
         FloatingActionButton(
             onClick = { onCall() }, modifier = Modifier.weight(1f),
-            containerColor = Color(
-                0xFFDA2433
-            ),
-            contentColor = Color.White
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -45,8 +43,7 @@ fun ContactActionButtons(
             ) {
                 Icon(
                     Icons.Default.Call,
-                    contentDescription = stringResource(R.string.contact_action_button_call),
-                    tint = Color.White
+                    contentDescription = stringResource(R.string.contact_action_button_call)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(
@@ -58,10 +55,9 @@ fun ContactActionButtons(
         }
         Spacer(modifier = Modifier.width(16.dp))
         FloatingActionButton(
-            onClick = { onMessage() }, modifier = Modifier.weight(1f), containerColor = Color(
-                0xFFDA2433
-            ),
-            contentColor = Color.White
+            onClick = { onMessage() }, modifier = Modifier.weight(1f),
+            containerColor = MaterialTheme.colorScheme.primary,
+            contentColor = MaterialTheme.colorScheme.onPrimary
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -69,8 +65,7 @@ fun ContactActionButtons(
             ) {
                 Icon(
                     Icons.Default.MailOutline,
-                    contentDescription = stringResource(R.string.contact_action_button_message),
-                    tint = Color.White
+                    contentDescription = stringResource(R.string.contact_action_button_message)
                 )
                 Spacer(modifier = Modifier.width(4.dp))
                 Text(

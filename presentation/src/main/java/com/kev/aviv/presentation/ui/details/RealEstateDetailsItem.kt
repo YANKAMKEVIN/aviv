@@ -10,6 +10,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -50,7 +51,7 @@ fun RealEstateDetailsItem(realEstate: RealEstateInfosDomain) {
             Text(
                 text = realEstate.city,
                 fontSize = 16.sp,
-                color = Color(0xFFE91E63),
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
                 fontStyle = FontStyle.Italic
             )
             Spacer(modifier = Modifier.height(20.dp))
