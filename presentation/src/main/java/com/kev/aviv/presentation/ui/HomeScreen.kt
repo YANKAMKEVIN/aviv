@@ -10,6 +10,7 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.adaptive.ExperimentalMaterial3AdaptiveApi
 import androidx.compose.material3.adaptive.layout.AnimatedPane
 import androidx.compose.material3.adaptive.layout.ListDetailPaneScaffoldRole
+import androidx.compose.material3.adaptive.layout.PaneAdaptedValue
 import androidx.compose.material3.adaptive.navigation.NavigableListDetailPaneScaffold
 import androidx.compose.material3.adaptive.navigation.rememberListDetailPaneScaffoldNavigator
 import androidx.compose.runtime.Composable
@@ -28,12 +29,17 @@ import kotlinx.coroutines.launch
 fun HomeScreen(modifier: Modifier = Modifier) {
     val navigator = rememberListDetailPaneScaffoldNavigator<Any>()
     val scope = rememberCoroutineScope()
+    // Both panes side by side (tablets): the listing shown on the right is highlighted in the list.
+    val isTwoPane = navigator.scaffoldValue[ListDetailPaneScaffoldRole.List] == PaneAdaptedValue.Expanded &&
+        navigator.scaffoldValue[ListDetailPaneScaffoldRole.Detail] == PaneAdaptedValue.Expanded
+    val selectedId = navigator.currentDestination?.contentKey?.toString()
 
     NavigableListDetailPaneScaffold(
         modifier = modifier,
         navigator = navigator,
         listPane = {
             RealEstateListRoute(
+                selectedId = if (isTwoPane) selectedId else null,
                 onNavigateToDetail = { id ->
                     scope.launch {
                         navigator.navigateTo(

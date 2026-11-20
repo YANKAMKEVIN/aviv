@@ -1,6 +1,5 @@
 package com.kev.aviv.presentation.ui.list
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Card
@@ -12,11 +11,9 @@ import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.presentation.ui.RealEstateImage
 
 @Composable
-fun RealEstateImageCard(realEstate: RealEstateInfosDomain, onClick: () -> Unit = {}) {
+fun RealEstateImageCard(realEstate: RealEstateInfosDomain) {
     Card(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() },
+        modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(12.dp),
         elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
     )

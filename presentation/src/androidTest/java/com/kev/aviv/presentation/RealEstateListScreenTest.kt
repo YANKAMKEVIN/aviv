@@ -132,8 +132,8 @@ class RealEstateListScreenTest {
 
         composeTestRule.onNodeWithText("Paris").performClick()
 
-        // Assert
-        assert(!isClicked)
+        // Assert: the whole card opens the details, not only the photo
+        assert(isClicked)
     }
 
     @Test

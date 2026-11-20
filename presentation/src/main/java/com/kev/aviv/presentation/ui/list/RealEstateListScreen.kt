@@ -30,6 +30,7 @@ import com.kev.aviv.common.loader.LoaderScreen
 @Composable
 fun RealEstateListRoute(
     onNavigateToDetail: (id: String) -> Unit,
+    selectedId: String? = null,
     viewModel: RealEstateListViewModel = hiltViewModel()
 ) {
     val state by viewModel.state.collectAsStateWithLifecycle()
@@ -42,7 +43,8 @@ fun RealEstateListRoute(
             RealEstateListScreen(
                 state = state,
                 onNavigateToDetail = onNavigateToDetail,
-                onRefresh = viewModel::fetchRealEstatesList
+                onRefresh = viewModel::fetchRealEstatesList,
+                selectedId = selectedId
             )
         }
     )
@@ -52,7 +54,8 @@ fun RealEstateListRoute(
 fun RealEstateListScreen(
     state: RealEstateListState,
     onNavigateToDetail: (id: String) -> Unit,
-    onRefresh: () -> Unit = {}
+    onRefresh: () -> Unit = {},
+    selectedId: String? = null
 ) {
     Column {
         Spacer(modifier = Modifier.height(16.dp))
@@ -73,7 +76,11 @@ fun RealEstateListScreen(
         }
         LazyColumn {
             items(state.realEstates) { realEstate ->
-                RealEstateItem(realEstate, onNavigateToDetail)
+                RealEstateItem(
+                    realEstate = realEstate,
+                    onClick = onNavigateToDetail,
+                    isSelected = realEstate.id.toString() == selectedId
+                )
                 HorizontalDivider(
                     modifier = Modifier
                         .fillMaxWidth()
