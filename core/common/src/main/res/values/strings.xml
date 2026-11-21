@@ -34,13 +34,11 @@
     </plurals>
     <string name="contact_action_button_call">Appeler</string>
     <string name="contact_action_button_message">Message</string>
-    <string name="details_screen_proposition_button">Proposer un prix</string>
     <string name="details_pane_placeholder">Sélectionnez une annonce pour afficher son détail</string>
     <string name="loan_simulation_text">Simuler mon crédit</string>
     <string name="details_title">%1$s à %2$s</string>
     <string name="details_back">Retour à la liste</string>
     <string name="details_agency_label">Annonce proposée par</string>
-    <string name="details_coming_soon">Bientôt disponible</string>
     <string name="details_share_title">Partager l\'annonce</string>
     <string name="details_share_text">%1$s à %2$s : %3$s €</string>
     <string name="loan_sheet_amount">Montant emprunté : %1$s €</string>
