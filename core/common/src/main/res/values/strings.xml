@@ -46,6 +46,7 @@
     <string name="loan_sheet_amount">Montant emprunté : %1$s €</string>
     <string name="loan_sheet_duration">Sur %1$d ans</string>
     <string name="loan_sheet_monthly">%1$s € / mois</string>
-    <string name="loan_sheet_disclaimer">Estimation indicative au taux de %1$s %%, sans apport ni assurance.</string>
+    <string name="loan_sheet_indicative_rate">Taux indicatif de %1$s %%, non contractuel</string>
+    <string name="loan_sheet_disclaimer">Estimation indicative, sans apport ni assurance. Le taux réel dépend de votre banque et de votre dossier.</string>
     <string name="price_per_square_meter_text">%1$s € / m²</string>
 </resources>
