@@ -1,6 +1,7 @@
 package com.kev.aviv.presentation.ui.details
 
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -30,7 +31,8 @@ import com.kev.aviv.common.R
  * Bottom bar of the detail page: contacting the agency stays within thumb reach.
  *
  * The "Appeler" button only shows when [onCall] is given: the listings API returns no phone
- * number, so the detail page currently passes null and only "Message" is offered.
+ * number, so the detail page currently passes null and only "Message" is offered. Alone, "Message"
+ * is a filled button; next to "Appeler" it becomes the outlined secondary action.
  */
 @Composable
 fun ContactActionButtons(
@@ -65,12 +67,10 @@ fun ContactActionButtons(
                 }
                 Spacer(modifier = Modifier.width(12.dp))
             }
-            OutlinedButton(
-                onClick = onMessage,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(52.dp)
-            ) {
+            val messageModifier = Modifier
+                .weight(1f)
+                .height(52.dp)
+            val messageContent: @Composable RowScope.() -> Unit = {
                 Icon(
                     Icons.Default.MailOutline,
                     contentDescription = null,
@@ -82,6 +82,12 @@ fun ContactActionButtons(
                     fontSize = 16.sp,
                     fontWeight = FontWeight.Bold
                 )
+            }
+            if (onCall == null) {
+                // Alone in the bar, "Message" is the main action: filled button.
+                Button(onClick = onMessage, modifier = messageModifier, content = messageContent)
+            } else {
+                OutlinedButton(onClick = onMessage, modifier = messageModifier, content = messageContent)
             }
         }
     }
