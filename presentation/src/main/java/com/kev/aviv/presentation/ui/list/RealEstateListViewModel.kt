@@ -53,7 +53,8 @@ class RealEstateListViewModel @Inject constructor(
 
     /**
      * Pull-to-refresh: reloads while the current listings stay on screen. If it fails, the
-     * listings already shown are kept; the error screen is only used when there is nothing to show.
+     * listings already shown are kept and [RealEstateListState.refreshError] tells the user so
+     * (snackbar); the error screen is only used when there is nothing to show.
      */
     fun refresh() {
         if (currentState.isRefreshing) return
@@ -61,7 +62,7 @@ class RealEstateListViewModel @Inject constructor(
         listJob = viewModelScope.launch {
             getRealEstatesListUseCase().asResult()
                 .doOnLoading {
-                    setState { copy(isRefreshing = true) }
+                    setState { copy(isRefreshing = true, refreshError = null) }
                 }
                 .doOnSuccess {
                     setState { copy(realEstates = it, loaderState = LoaderState.SUCCEED, isRefreshing = false) }
@@ -71,12 +72,17 @@ class RealEstateListViewModel @Inject constructor(
                         if (realEstates.isEmpty()) {
                             copy(loaderState = LoaderState.FAILED, errorType = error.toErrorType(), isRefreshing = false)
                         } else {
-                            copy(isRefreshing = false)
+                            copy(isRefreshing = false, refreshError = error.toErrorType())
                         }
                     }
                 }
                 .collect()
         }
+    }
+
+    /** The refresh failure message has been shown: do not show it again. */
+    fun onRefreshErrorShown() {
+        setState { copy(refreshError = null) }
     }
 }
 
@@ -85,5 +91,7 @@ data class RealEstateListState(
     val loaderState: LoaderState = LoaderState.IN_PROGRESS,
     val errorType: ErrorType? = null,
     /** A pull-to-refresh is in progress (the current listings stay displayed). */
-    val isRefreshing: Boolean = false
+    val isRefreshing: Boolean = false,
+    /** Why the last pull-to-refresh failed while listings stayed displayed; null once shown. */
+    val refreshError: ErrorType? = null
 ) : UiState

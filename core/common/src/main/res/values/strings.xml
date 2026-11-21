@@ -16,6 +16,9 @@
     <string name="list_screen_empty_title">Aucune annonce pour le moment</string>
     <string name="list_screen_empty_description">De nouveaux biens sont publiés régulièrement. Revenez un peu plus tard ou actualisez la liste.</string>
     <string name="list_screen_empty_refresh">Actualiser</string>
+    <string name="list_screen_refresh_error">Les annonces n\'ont pas pu être actualisées.</string>
+    <string name="list_screen_refresh_network_error">Actualisation impossible : vérifiez votre connexion internet.</string>
+    <string name="list_screen_refresh_server_error">Actualisation impossible : le service est momentanément indisponible.</string>
     <string name="list_screen_price_format">%1$s €</string>
     <string name="list_screen_card_title">%1$s · %2$s</string>
     <string name="list_screen_area_format">%1$s m²</string>
