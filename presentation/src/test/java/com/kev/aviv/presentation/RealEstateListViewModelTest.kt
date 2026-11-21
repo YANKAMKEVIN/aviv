@@ -197,4 +197,72 @@ class RealEstateListViewModelTest {
         assert(viewModel.state.value.loaderState == LoaderState.FAILED)
         assert(viewModel.state.value.errorType == ErrorType.SERVER)
     }
+
+    @Test
+    fun `a failed refresh with listings shown exposes a refresh error`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(listOf(paris)),
+            flow { throw ApiException(NetworkError.UnResolveAddress("Unable to resolve host")) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        viewModel.refresh()
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.refreshError == ErrorType.NETWORK)
+        assert(viewModel.state.value.errorType == null)
+    }
+
+    @Test
+    fun `a failed refresh with nothing to show does not expose a refresh error`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(emptyList()),
+            flow { throw ApiException(NetworkError.InternalServerError("Internal server error")) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+
+        viewModel.refresh()
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.refreshError == null)
+    }
+
+    @Test
+    fun `the refresh error is cleared once shown`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(listOf(paris)),
+            flow { throw ApiException(NetworkError.InternalServerError("Internal server error")) }
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+        viewModel.refresh()
+        advanceUntilIdle()
+        assert(viewModel.state.value.refreshError == ErrorType.SERVER)
+
+        viewModel.onRefreshErrorShown()
+
+        assert(viewModel.state.value.refreshError == null)
+    }
+
+    @Test
+    fun `retrying the refresh clears the error and loads the new listings`() = runTest {
+        coEvery { getRealEstatesListUseCase() } returnsMany listOf(
+            flowOf(listOf(paris)),
+            flow { throw Exception("An error occurred") },
+            flowOf(listOf(paris, lyon))
+        )
+        val viewModel = RealEstateListViewModel(getRealEstatesListUseCase)
+        advanceUntilIdle()
+        viewModel.refresh()
+        advanceUntilIdle()
+        assert(viewModel.state.value.refreshError == ErrorType.UNKNOWN)
+
+        viewModel.refresh()
+        advanceUntilIdle()
+
+        assert(viewModel.state.value.refreshError == null)
+        assert(viewModel.state.value.realEstates == listOf(paris, lyon))
+    }
 }

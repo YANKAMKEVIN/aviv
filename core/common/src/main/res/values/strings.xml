@@ -16,6 +16,9 @@
     <string name="list_screen_empty_title">Aucune annonce pour le moment</string>
     <string name="list_screen_empty_description">De nouveaux biens sont publiés régulièrement. Revenez un peu plus tard ou actualisez la liste.</string>
     <string name="list_screen_empty_refresh">Actualiser</string>
+    <string name="list_screen_refresh_error">Les annonces n\'ont pas pu être actualisées.</string>
+    <string name="list_screen_refresh_network_error">Actualisation impossible : vérifiez votre connexion internet.</string>
+    <string name="list_screen_refresh_server_error">Actualisation impossible : le service est momentanément indisponible.</string>
     <string name="list_screen_price_format">%1$s €</string>
     <string name="list_screen_card_title">%1$s · %2$s</string>
     <string name="list_screen_area_format">%1$s m²</string>
@@ -31,19 +34,17 @@
     </plurals>
     <string name="contact_action_button_call">Appeler</string>
     <string name="contact_action_button_message">Message</string>
-    <string name="details_screen_proposition_button">Proposer un prix</string>
     <string name="details_pane_placeholder">Sélectionnez une annonce pour afficher son détail</string>
     <string name="loan_simulation_text">Simuler mon crédit</string>
     <string name="details_title">%1$s à %2$s</string>
     <string name="details_back">Retour à la liste</string>
     <string name="details_agency_label">Annonce proposée par</string>
-    <string name="details_coming_soon">Bientôt disponible</string>
-    <string name="details_no_dialer">Aucune application de téléphone sur cet appareil</string>
     <string name="details_share_title">Partager l\'annonce</string>
     <string name="details_share_text">%1$s à %2$s : %3$s €</string>
     <string name="loan_sheet_amount">Montant emprunté : %1$s €</string>
     <string name="loan_sheet_duration">Sur %1$d ans</string>
     <string name="loan_sheet_monthly">%1$s € / mois</string>
-    <string name="loan_sheet_disclaimer">Estimation indicative au taux de %1$s %%, sans apport ni assurance.</string>
+    <string name="loan_sheet_indicative_rate">Taux indicatif de %1$s %%, non contractuel</string>
+    <string name="loan_sheet_disclaimer">Estimation indicative, sans apport ni assurance. Le taux réel dépend de votre banque et de votre dossier.</string>
     <string name="price_per_square_meter_text">%1$s € / m²</string>
 </resources>

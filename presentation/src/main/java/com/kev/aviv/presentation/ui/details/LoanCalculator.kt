@@ -1,11 +1,18 @@
 package com.kev.aviv.presentation.ui.details
 
+import com.kev.aviv.common.utils.toFormatArea
 import kotlin.math.pow
 
 /** Indicative mortgage estimate shown by "Simuler mon crédit" (no down payment, no insurance). */
 object LoanCalculator {
-    /** Indicative yearly rate, in percent. */
+    /**
+     * Indicative yearly rate, in percent. Kept fixed on purpose (Kevin, 21/11): the sheet labels
+     * it as indicative and non-binding rather than letting the user edit it.
+     */
     const val INDICATIVE_RATE_PERCENT = 3.5
+
+    /** The indicative rate as shown to the user, French style: "3,5". */
+    fun indicativeRateLabel(): String = INDICATIVE_RATE_PERCENT.toFormatArea()
 
     /** Durations offered by the simulation, in years. */
     val DURATIONS_YEARS = listOf(20, 25)

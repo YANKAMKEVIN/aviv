@@ -30,4 +30,18 @@ class LoanCalculatorTest {
         assertNull(LoanCalculator.monthlyPayment(0.0, 20))
         assertNull(LoanCalculator.monthlyPayment(200_000.0, 0))
     }
+
+    @Test
+    fun `the simulation keeps the indicative rate of 3,5 percent`() {
+        assertEquals(3.5, LoanCalculator.INDICATIVE_RATE_PERCENT, 0.0)
+        assertEquals(
+            LoanCalculator.monthlyPayment(200_000.0, 20, 3.5),
+            LoanCalculator.monthlyPayment(200_000.0, 20)
+        )
+    }
+
+    @Test
+    fun `the indicative rate is shown with a French decimal comma`() {
+        assertEquals("3,5", LoanCalculator.indicativeRateLabel())
+    }
 }

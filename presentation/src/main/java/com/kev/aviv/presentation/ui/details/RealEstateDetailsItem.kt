@@ -18,16 +18,11 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.SnackbarHost
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -45,7 +40,6 @@ import com.kev.aviv.common.utils.toFormatPrice
 import com.kev.aviv.domain.model.RealEstateInfosDomain
 import com.kev.aviv.presentation.ui.RealEstateImage
 import com.kev.aviv.presentation.ui.RealEstateInfos
-import kotlinx.coroutines.launch
 
 @Composable
 fun RealEstateDetailsItem(
@@ -53,12 +47,8 @@ fun RealEstateDetailsItem(
     onBack: (() -> Unit)? = null
 ) {
     val context = LocalContext.current
-    val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
     var showLoanSimulation by rememberSaveable { mutableStateOf(false) }
 
-    val comingSoon = stringResource(R.string.details_coming_soon)
-    val noDialer = stringResource(R.string.details_no_dialer)
     val shareTitle = stringResource(R.string.details_share_title)
     val shareText = stringResource(
         R.string.details_share_text,
@@ -66,20 +56,13 @@ fun RealEstateDetailsItem(
         realEstate.city,
         realEstate.price.toFormatPrice()
     )
-    fun showMessage(message: String) {
-        scope.launch {
-            snackbarHostState.currentSnackbarData?.dismiss()
-            snackbarHostState.showSnackbar(message)
-        }
-    }
 
     Scaffold(
         // The photo goes under the status bar; the bottom bar handles the navigation bar.
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
-        snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
+            // No "Appeler": the API gives no phone number for the agency.
             ContactActionButtons(
-                onCall = { if (!context.openDialer()) showMessage(noDialer) },
                 onMessage = { context.shareText(shareText, shareTitle) }
             )
         }
@@ -147,18 +130,6 @@ fun RealEstateDetailsItem(
                 )
                 Spacer(modifier = Modifier.height(8.dp))
                 LoanSimulation(onClick = { showLoanSimulation = true })
-                OutlinedButton(
-                    onClick = { showMessage(comingSoon) },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp)
-                ) {
-                    Text(
-                        text = stringResource(R.string.details_screen_proposition_button),
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Bold
-                    )
-                }
 
                 Spacer(modifier = Modifier.height(24.dp))
                 AgencyRow(realEstate.professional)
