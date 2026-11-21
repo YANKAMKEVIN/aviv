@@ -41,7 +41,6 @@
     <string name="details_back">Retour à la liste</string>
     <string name="details_agency_label">Annonce proposée par</string>
     <string name="details_coming_soon">Bientôt disponible</string>
-    <string name="details_no_dialer">Aucune application de téléphone sur cet appareil</string>
     <string name="details_share_title">Partager l\'annonce</string>
     <string name="details_share_text">%1$s à %2$s : %3$s €</string>
     <string name="loan_sheet_amount">Montant emprunté : %1$s €</string>

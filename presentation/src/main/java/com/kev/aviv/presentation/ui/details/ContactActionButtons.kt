@@ -26,10 +26,15 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.kev.aviv.common.R
 
-/** Bottom bar of the detail page: contacting the agency stays within thumb reach. */
+/**
+ * Bottom bar of the detail page: contacting the agency stays within thumb reach.
+ *
+ * The "Appeler" button only shows when [onCall] is given: the listings API returns no phone
+ * number, so the detail page currently passes null and only "Message" is offered.
+ */
 @Composable
 fun ContactActionButtons(
-    onCall: () -> Unit = {},
+    onCall: (() -> Unit)? = null,
     onMessage: () -> Unit = {}
 ) {
     Surface(shadowElevation = 8.dp) {
@@ -39,25 +44,27 @@ fun ContactActionButtons(
                 .navigationBarsPadding()
                 .padding(horizontal = 16.dp, vertical = 12.dp)
         ) {
-            Button(
-                onClick = onCall,
-                modifier = Modifier
-                    .weight(1f)
-                    .height(52.dp)
-            ) {
-                Icon(
-                    Icons.Default.Call,
-                    contentDescription = null,
-                    modifier = Modifier.size(ButtonDefaults.IconSize)
-                )
-                Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
-                Text(
-                    text = stringResource(R.string.contact_action_button_call),
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold
-                )
+            if (onCall != null) {
+                Button(
+                    onClick = onCall,
+                    modifier = Modifier
+                        .weight(1f)
+                        .height(52.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Call,
+                        contentDescription = null,
+                        modifier = Modifier.size(ButtonDefaults.IconSize)
+                    )
+                    Spacer(modifier = Modifier.width(ButtonDefaults.IconSpacing))
+                    Text(
+                        text = stringResource(R.string.contact_action_button_call),
+                        fontSize = 16.sp,
+                        fontWeight = FontWeight.Bold
+                    )
+                }
+                Spacer(modifier = Modifier.width(12.dp))
             }
-            Spacer(modifier = Modifier.width(12.dp))
             OutlinedButton(
                 onClick = onMessage,
                 modifier = Modifier
@@ -85,4 +92,10 @@ fun ContactActionButtons(
 @Preview(showBackground = true)
 fun ContactActionButtonsPreview() {
     ContactActionButtons()
+}
+
+@Composable
+@Preview(showBackground = true)
+fun ContactActionButtonsWithCallPreview() {
+    ContactActionButtons(onCall = {})
 }

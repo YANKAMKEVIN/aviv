@@ -58,7 +58,6 @@ fun RealEstateDetailsItem(
     var showLoanSimulation by rememberSaveable { mutableStateOf(false) }
 
     val comingSoon = stringResource(R.string.details_coming_soon)
-    val noDialer = stringResource(R.string.details_no_dialer)
     val shareTitle = stringResource(R.string.details_share_title)
     val shareText = stringResource(
         R.string.details_share_text,
@@ -78,8 +77,8 @@ fun RealEstateDetailsItem(
         contentWindowInsets = WindowInsets(0, 0, 0, 0),
         snackbarHost = { SnackbarHost(snackbarHostState) },
         bottomBar = {
+            // No "Appeler": the API gives no phone number for the agency.
             ContactActionButtons(
-                onCall = { if (!context.openDialer()) showMessage(noDialer) },
                 onMessage = { context.shareText(shareText, shareTitle) }
             )
         }
